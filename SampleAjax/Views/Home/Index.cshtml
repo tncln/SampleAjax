@@ -6,6 +6,73 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
-@section JavaScript{ 
-<h3>Test</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="p-2">
+            <h4 class="text-center">Bir Kullanıcı Getir</h4>
+            <input type="text" id="kullaniciId" class="form-control" />
+            <button type="button" id="birKullaniciGetir" class="btn btn-block btn-info">Getir</button>
+        </div>
+        <div class="p-2" id="birKullanici">
+
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="p-2">
+            <button type="button" id="GetAll" class="btn btn-block btn-info">Getir</button>
+        </div>
+        <div class="p-2" id="KullaniciListesi">
+
+        </div>
+    </div>
+</div>
+
+
+@section JavaScript{
+    <script>
+        $(document).ready(function () {
+            $("#birKullaniciGetir").click(function () {
+                let id = $("#kullaniciId").val();
+                $.ajax({
+                    contentType: "application/json; charset=Utf-8",
+                    dataType: "json",
+                    type: "Get",
+                    url: "/Home/GetById",
+                    data: { id: id },
+                    success: function (adem) {
+                        console.log(adem);
+                        let donustu = jQuery.parseJSON(adem);
+                        console.log(donustu.Id);
+                        console.log(donustu.Ad)
+                        let htmlString = `<table class="table table-hover table-sm">
+                                <tr> <th>Id</th><td> ${donustu.Id}</td></tr>
+                                <tr> <th>Adı</th><td> ${donustu.Ad}</td></tr>
+                                    </table>`
+                        $("#birKullanici").html(htmlString);
+                        
+                    }
+                });
+            });
+            $("#GetAll").click(function () {
+                $.ajax({
+                    contentType: "application/json; charset=Utf-8",
+                    dataType: "json",
+                    type: "Get",
+                    url: "/Home/List",
+                    success: function (data) {
+                        let GetAll = jQuery.parseJSON(data);
+                        let html = "<table class='table table-hover table-sm' ><tr><th>Kullanıcı Id</th><th>Kullanıcı Ad</th></tr></table>";
+
+                        $.each(GetAll, (index, value) => {
+                            html += `<tr><td>${value.Id}</td><td>${value.Ad}</td></tr>`
+                        });
+                        html += "</table>";
+
+                        $("#KullaniciListesi").html(html);
+                    }
+                });
+            });
+        });
+    </script>
 }
