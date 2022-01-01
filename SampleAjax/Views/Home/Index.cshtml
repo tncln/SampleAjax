@@ -29,6 +29,11 @@
             </div>
         </div>
     </div>
+    <div class="col-md-12">
+        <input type="text" class="form-control" id="frmKullaniciId" />
+        <input type="text" class="form-control" id="frmKullaniciAd" />
+        <button type="button" id="KullaniciEkle" class="btn btn-block btn-info">Kullanıcı Ekle</button>
+    </div>
 </div>
 
 
@@ -77,6 +82,22 @@
                         html += "</table>";
 
                         $("#KullaniciListesi").html(html);
+                    }
+                });
+            });
+            $("#KullaniciEkle").click(function () {
+                let kullanici = {
+                    Ad: $("#frmKullaniciAd").val(),
+                    Id: $("#frmKullaniciId").val()
+                };
+
+                $.ajax({
+                    type: "Post",
+                    url: "Home/Ekle",
+                    data: kullanici,
+                    success: function (data) {
+                        let gelenData = jQuery.parseJSON(data);
+                        console.log(gelenData.Ad);
                     }
                 });
             });

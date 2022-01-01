@@ -19,12 +19,7 @@ namespace SampleAjax.Controllers
        
         public HomeController(ILogger<HomeController> logger)
         {
-            kullanicilar = new List<Kullanici> {
-            new Kullanici{ Ad="test", Id=1},
-            new Kullanici{ Ad="test2", Id=2},
-            new Kullanici { Ad = "test3", Id = 3 },
-            new Kullanici { Ad = "test4", Id = 4 },
-            };
+            
             _logger = logger;
         }
 
@@ -40,8 +35,17 @@ namespace SampleAjax.Controllers
         }
         public IActionResult GetById(int id)
         {
-            var jsonkullanici = JsonConvert.SerializeObject(kullanicilar.FirstOrDefault(x => x.Id == id));
-            return Json(jsonkullanici);
+            var bulunanKullanici = KullaniciIslem.GetirId(id);
+            var jsonKullanici = JsonConvert.SerializeObject(bulunanKullanici);
+            return Json(jsonKullanici);
+        }
+        [HttpPost]
+        public IActionResult Ekle(Kullanici kullanici)
+        {
+            KullaniciIslem.Ekle(kullanici);
+            var jsonKullanici = JsonConvert.SerializeObject(kullanici);
+            return Json(jsonKullanici);
+
         }
         public IActionResult Privacy()
         {
