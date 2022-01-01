@@ -23,7 +23,10 @@
             <button type="button" id="GetAll" class="btn btn-block btn-info">Getir</button>
         </div>
         <div class="p-2" id="KullaniciListesi">
-
+            <div id="loader" class="d-flex align-items-sm-center" style="display:none!important;">
+                <strong>Yükleniyor Lütfen Bekleyiniz...</strong>
+                <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -60,9 +63,13 @@
                     dataType: "json",
                     type: "Get",
                     url: "/Home/List",
+                    beforeSend: function () {
+                        $("#loader").show();
+                    },
                     success: function (data) {
+                        $("#loader").hide();
                         let GetAll = jQuery.parseJSON(data);
-                        let html = "<table class='table table-hover table-sm' ><tr><th>Kullanıcı Id</th><th>Kullanıcı Ad</th></tr></table>";
+                        let html = "<table class='table table-hover table-sm' ><tr><th>Kullanıcı Id</th><th>Kullanıcı Ad</th></tr>";
 
                         $.each(GetAll, (index, value) => {
                             html += `<tr><td>${value.Id}</td><td>${value.Ad}</td></tr>`

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SampleAjax.Controllers
@@ -33,12 +34,13 @@ namespace SampleAjax.Controllers
         }
         public IActionResult List()
         {
+            Thread.Sleep(10000);
             var jsonkullanici = JsonConvert.SerializeObject(kullanicilar);
             return Json(jsonkullanici);
         }
         public IActionResult GetById(int id)
         {
-            var jsonkullanici = JsonConvert.SerializeObject(kullanicilar.Where(x => x.Id == id));
+            var jsonkullanici = JsonConvert.SerializeObject(kullanicilar.FirstOrDefault(x => x.Id == id));
             return Json(jsonkullanici);
         }
         public IActionResult Privacy()
